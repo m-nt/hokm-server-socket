@@ -1,0 +1,27 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "nodemon server",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "appmetrics-dash": "*",
+    "connect-flash": "*",
+    "express": "*",
+    "jalali-date": "*",
+    "mongoose": "*",
+    "socket.io": "*"
+  },
+  "engines": {
+    "node": "*",
+    "npm": "*"
+  },
+  "author": "mohamad nosratian",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "*"
+  }
+}

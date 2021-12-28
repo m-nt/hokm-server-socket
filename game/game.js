@@ -39,6 +39,7 @@ module.exports = class Game {
         clearTimeout(this.alert);
         let result = this.stage.next(data);
         if (result.msg == "end") {
+          this.gameState = null;
           let score = (result.teamScore.team0 - result.teamScore.team1) * 5;
           Object.values(this.players).forEach((/** @type {User} */ users) => {
             UserM.findOne({ _id: mongoose.Types.ObjectId(users.id) })
@@ -52,6 +53,8 @@ module.exports = class Game {
                       : Number(users.number) == 0 || Number(users.number) == 2
                       ? score
                       : score * -1;
+                  user.save();
+                  console.log(`User(${user.Username}) earn: $${user.Dept} coin`);
                 }
               })
               .catch((err) => {
@@ -71,6 +74,7 @@ module.exports = class Game {
           });
           this.stage.nextStage();
         }
+        if (result.msg != "end") {
         this.alert = setTimeout(
           () => {
             data = {
@@ -88,6 +92,7 @@ module.exports = class Game {
             ? result.timeout
             : this.players[this.stage.nextPlayer].timeout
         );
+        }
         break;
       default:
         break;

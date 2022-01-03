@@ -139,12 +139,20 @@ module.exports = class Stage {
             this.teamCount.team1++;
           }
           if (this.teamCount.team0 >= 7 && this.teamCount.team1 == 0) {
-            this.teamScore.team0 += 2;
+            if (this.WitchTeam(this.ruler, false) == 0) {
+              this.teamScore.team0 += 2;
+            } else {
+              this.teamScore.team0 += 3;
+            }
           } else if (this.teamCount.team0 >= 7) {
             this.teamScore.team0++;
           }
           if (this.teamCount.team1 >= 7 && this.teamCount.team0 == 0) {
-            this.teamScore.team1 += 2;
+            if (this.WitchTeam(this.ruler, false) == 1) {
+              this.teamScore.team1 += 2;
+            } else {
+              this.teamScore.team1 += 3;
+            }
           } else if (this.teamCount.team1 >= 7) {
             this.teamScore.team1++;
           }
@@ -227,13 +235,13 @@ module.exports = class Stage {
     this.teamCount.team1 = 0;
     this.stage = this.StageEnum.STAGE2;
     if (this.WitchTeam(this.ruler, true) == team) {
-//console.log(`EXCLUSIVE: Decide the next ruler.\ncurrent:(${this.ruler})`);
+      //console.log(`EXCLUSIVE: Decide the next ruler.\ncurrent:(${this.ruler})`);
       if (this.ruler == 3) {
         this.ruler = 0;
       } else {
         this.ruler++;
       }
-//console.log(`next:(${this.ruler})\n`);
+      //console.log(`next:(${this.ruler})\n`);
     }
     this.nextPlayer = this.ruler;
     this.playedPlayer = this.ruler;

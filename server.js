@@ -28,15 +28,15 @@ io.on("connection", (socket) => {
   socket.on("init", (data) => {
     const user = new User(data.name, data.id, socket);
     matchM.players[socket.id] = user;
-    Object.values(matchM.players).forEach((player) => {
-      console.log(`player[${player.socket.id}] with name:${player.name}`);
-    });
+    // Object.values(matchM.players).forEach((player) => {
+    //   console.log(`player[${player.socket.id}] with name:${player.name}`);
+    // });
   });
   socket.on("ReadyToPlayCustom", (data) => {
     matchM.CustomMatchReady(socket);
   });
   socket.on("PlayerReadyLobby", (data) => {
-    console.log(data);
+    //console.log(data);
     const user = new User(data.name, data.id, socket);
     matchM.PlayerReady(user);
   });
@@ -56,7 +56,7 @@ io.on("connection", (socket) => {
   socket.on("RequestToJoin", (data) => {
     Object.entries(matchM.players).forEach((obj) => {
       if (data.userID == obj[1].id) {
-        console.log("send RequestToJoin");
+        //console.log("send RequestToJoin");
         io.to(obj[0]).emit("RequestToJoin", { room: data.room, name: data.name });
       }
     });
@@ -78,15 +78,15 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     delete matchM.players[socket.id];
     matchM.playerDisconnect(socket);
-    console.log("user disconnected");
+    //console.log("user disconnected");
   });
 });
 io.of("/").adapter.on("create-room", (room) => {
-  console.log(`room ${room} was created`);
+  //console.log(`room ${room} was created`);
 });
 
 io.of("/").adapter.on("join-room", (room, id) => {
-  console.log(`socket ${id} has joined room ${room}`);
+  //console.log(`socket ${id} has joined room ${room}`);
 });
 server.listen(PORT, () => {
   console.log(`listening on ${PORT} . . .`);

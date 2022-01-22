@@ -13,7 +13,7 @@ module.exports = class MatchManager {
   ReadySignal(/** @type {Socket} */ socket, data) {
     let roomName = this.rooms[socket.id];
     let readySignal = this.games[roomName].readySignal;
-    Logger(`ReadySignal: [${readySignal}] by: [${socket.id}] in: [${roomName}]`);
+    //Logger(`ReadySignal: [${readySignal}] by: [${socket.id}] in: [${roomName}]`);
     if (readySignal == 3) {
       this.games[roomName].next(data);
     } else {
@@ -25,18 +25,18 @@ module.exports = class MatchManager {
 
     if (data) {
       if (data.pn == this.games[roomName].stage.nextPlayer) {
-        Logger("\nstage triggered by player number:[" + data.pn.toString() + "]");
+        //Logger("\nstage triggered by player number:[" + data.pn.toString() + "]");
         this.games[roomName].next(data);
       }
     } else {
-      Logger("stage triggered by player number:[-1]");
+      //Logger("stage triggered by player number:[-1]");
       this.games[roomName].next({ pn: -1, cd: -1 });
     }
   }
   PlayerReadyCustom(/** @type {User} */ player) {
     this.MakeAMatch(player, false);
-    let loger = "-------------- make a match/ Custom --------------\n" + "player: " + player.name;
-    Logger(loger);
+    //let loger = "-------------- make a match/ Custom --------------\n" + "player: " + player.name;
+    //Logger(loger);
   }
   PlayerJoinCustom(/** @type {User} */ player, room) {
     let plyr = this.games[room].addPlayer(player);
@@ -70,10 +70,10 @@ module.exports = class MatchManager {
   }
   PlayerReady(/** @type {User} */ player) {
     if (this.findSpot(player)) {
-      Logger(`-------------- find a spot --------------\nPlayer: ${player.name}`);
+      //Logger(`-------------- find a spot --------------\nPlayer: ${player.name}`);
     } else {
       this.MakeAMatch(player, true);
-      Logger(`-------------- make a match/ Random --------------\nPlayer: ${player.name}`);
+      //Logger(`-------------- make a match/ Random --------------\nPlayer: ${player.name}`);
     }
   }
   MakeAMatch(/** @type {User} */ player, custom) {
@@ -149,7 +149,7 @@ module.exports = class MatchManager {
         this.io.to(roomName).emit("GameDestroied");
       }
       Object.values(this.games).forEach((game) => {
-        Logger(`game id(${game.room}) with:${game.gameState} status`);
+        //Logger(`game id(${game.room}) with:${game.gameState} status`);
       });
     }
   }
@@ -181,7 +181,7 @@ module.exports = class MatchManager {
     }
     delete this.players[socket.id];
     Object.values(this.games).forEach((game) => {
-      Logger(`game id(${game.room}) with:${game.gameState} status`);
+      //Logger(`game id(${game.room}) with:${game.gameState} status`);
     });
   }
 };

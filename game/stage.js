@@ -63,7 +63,7 @@ module.exports = class Stage {
       case this.StageEnum.STAGE0:
         this.shuffledHand = this.shuffleTheHand();
         this.readyNext = true;
-        this.Logger({ pn: -1, cd: -1 });
+        //this.Logger({ pn: -1, cd: -1 });
         return this.stageJson;
       case this.StageEnum.STAGE1:
         let cards = this.shuffledHand.splice(0, 4);
@@ -82,7 +82,7 @@ module.exports = class Stage {
             return;
           }
         });
-        this.Logger({ pn: -1, cd: -1 });
+        //this.Logger({ pn: -1, cd: -1 });
         return result;
       case this.StageEnum.STAGE2:
         Object.keys(this.cardsOnGround).forEach((key) => {
@@ -94,14 +94,14 @@ module.exports = class Stage {
         });
         this.readyNext = true;
         this.timeout = 60000;
-        this.Logger({ pn: -1, cd: -1 });
+        //this.Logger({ pn: -1, cd: -1 });
         return this.stageJson;
       case this.StageEnum.STAGE3:
         let type = this.CardType(data.cd);
         this.hokm = type;
         this.readyNext = true;
         this.timeout = 5000;
-        this.Logger(data);
+        //this.Logger(data);
         return this.stageJson;
       case this.StageEnum.STAGE4:
         Object.keys(this.playercards).forEach((key) => {
@@ -114,7 +114,7 @@ module.exports = class Stage {
           this.msg = "OK4";
           this.timeout = 60000;
         }
-        this.Logger(data);
+        //this.Logger(data);
         return this.stageJson;
       case this.StageEnum.STAGE5:
         if (this.cardsOnIndex == 0) {
@@ -168,10 +168,10 @@ module.exports = class Stage {
 
           if (this.teamScore.team0 >= 7 || this.teamScore.team1 >= 7) {
             //this.stage = this.StageEnum.STAGE6;
-            this.Logger(data);
+            //this.Logger(data);
             return { ...this.stageJson, msg: "end" };
           }
-          this.Logger(data);
+          //this.Logger(data);
           return this.stageJson;
         } else {
           if (this.nextPlayer == 3) {
@@ -181,7 +181,7 @@ module.exports = class Stage {
             this.playedPlayer = this.nextPlayer;
             this.nextPlayer++;
           }
-          this.Logger(data);
+          //this.Logger(data);
           return this.stageJson;
         }
       case this.StageEnum.STAGE6:
@@ -190,7 +190,7 @@ module.exports = class Stage {
         } else {
           this.ResetTheMatch(1);
         }
-        this.Logger(data);
+        //this.Logger(data);
         return this.stageJson;
       default:
         break;

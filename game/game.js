@@ -28,14 +28,14 @@ module.exports = class Game {
     this.readySignal = 0;
     switch (this.gameState) {
       case this.State.LOBBY:
-        Logger("/////////////////////// Game State: LOBBY /////////////////////////");
+        //Logger("/////////////////////// Game State: LOBBY /////////////////////////");
         this.io.to(this.room).emit("StartTheMatch");
         this.gameState = this.State.INGAME;
         this.stage.next(data);
         this.stage.nextStage();
         break;
       case this.State.INGAME:
-        Logger(this.LoggerinGame());
+        //Logger(this.LoggerinGame());
         clearTimeout(this.alert);
         let result = this.stage.next(data);
         if (result.msg == "end") {
@@ -75,23 +75,23 @@ module.exports = class Game {
           this.stage.nextStage();
         }
         if (result.msg != "end") {
-        this.alert = setTimeout(
-          () => {
-            data = {
-              pn: this.stage.nextPlayer,
-              cd: this.AIdecision(result),
-            };
-            console.log("[*]stagte triggered Timeout");
-            if (result.msg != "end") {
-              this.next(data);
-            }
-          },
-          this.stage.stage == this.stage.StageEnum.STAGE5
-            ? this.players[this.stage.nextPlayer].timeout
-            : this.players[this.stage.nextPlayer].active
-            ? result.timeout
-            : this.players[this.stage.nextPlayer].timeout
-        );
+          this.alert = setTimeout(
+            () => {
+              data = {
+                pn: this.stage.nextPlayer,
+                cd: this.AIdecision(result),
+              };
+              console.log("[*]stagte triggered Timeout");
+              if (result.msg != "end") {
+                this.next(data);
+              }
+            },
+            this.stage.stage == this.stage.StageEnum.STAGE5
+              ? this.players[this.stage.nextPlayer].timeout
+              : this.players[this.stage.nextPlayer].active
+              ? result.timeout
+              : this.players[this.stage.nextPlayer].timeout
+          );
         }
         break;
       default:

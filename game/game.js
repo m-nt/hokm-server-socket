@@ -82,7 +82,7 @@ module.exports = class Game {
                 pn: this.stage.nextPlayer,
                 cd: this.AIdecision(result),
               };
-              console.log("[*]stagte triggered Timeout");
+              //console.log("[*]stagte triggered Timeout");
               if (result.msg != "end") {
                 this.next(data);
               }
@@ -140,12 +140,12 @@ module.exports = class Game {
         }
         break;
     }
-    Logger(
-      `AI Decide:(${res})\ncards length:${leng} - stage:${stage}\ncards:[${cards}]\nhands:[${this.DetectType(
-        cards,
-        result.hand
-      )}]\nhokms:[${this.DetectType(cards, result.hokm)}]`
-    );
+    //Logger(
+    //  `AI Decide:(${res})\ncards length:${leng} - stage:${stage}\ncards:[${cards}]\nhands:[${this.DetectType(
+    //    cards,
+    //    result.hand
+    //  )}]\nhokms:[${this.DetectType(cards, result.hokm)}]`
+    //);
     return res;
   }
   DetectType(x, type) {

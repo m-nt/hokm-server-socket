@@ -9,6 +9,7 @@ module.exports = class MatchManager {
     this.games = {};
     this.rooms = {};
     this.players = {};
+    this.BotTimerJoin = 30;
   }
   ReadySignal(/** @type {Socket} */ socket, data) {
     let roomName = this.rooms[socket.id];
@@ -92,7 +93,7 @@ module.exports = class MatchManager {
     }
     game.alert = setTimeout(() => {
       this.AddBot(game);
-    }, 1000 * 1 * 1);
+    }, 1000 * this.BotTimerJoin);
   }
 
   findSpot(/** @type {User} */ player) {
@@ -109,7 +110,7 @@ module.exports = class MatchManager {
           res = true;
           game[1].alert = setTimeout(() => {
             this.AddBot(game[1]);
-          }, 1000 * 1 * 1);
+          }, 1000 * this.BotTimerJoin);
           return true;
         }
       }
@@ -204,7 +205,7 @@ module.exports = class MatchManager {
       this.io.to(game.room).emit("playersjoined", { users: game.playersJson, room: game.room });
       game.alert = setTimeout(() => {
         this.AddBot(game);
-      }, 1000 * 1 * 1);
+      }, 1000 * this.BotTimerJoin);
     }
   }
 };

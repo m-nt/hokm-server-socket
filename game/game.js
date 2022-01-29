@@ -18,6 +18,7 @@ module.exports = class Game {
     this.gameState = this.State.LOBBY;
     this.stage = new Stage();
     this.readySignal = 0;
+    this.readylenght = 0;
     this.alert;
     // data = {
     //   pn:0,
@@ -163,6 +164,9 @@ module.exports = class Game {
         let player = _player;
         player.number = index.toString();
         this.players[player.number] = player;
+        if (player.active) {
+          this.readylenght++;
+        }
         return player;
       }
     }

@@ -65,6 +65,9 @@ module.exports = class MatchManager {
     if (!("4" in this.games[room].players)) {
       this.games[room].ready = true;
       this.io.to(room).emit("customlobbyready");
+      this.games[room].alert = setTimeout(() => {
+        this.AddBot(this.games[room]);
+      }, 1000 * this.BotTimerJoin);
     } else {
       this.io.to(room).emit("customlobbyNOTready");
     }
@@ -92,7 +95,9 @@ module.exports = class MatchManager {
       this.io.to(roomName).emit("playerpositionchange", { users: game.playersJson, room: game.room });
     }
     game.alert = setTimeout(() => {
-      this.AddBot(game);
+      if (game.ready == true) {
+        this.AddBot(game);
+      }
     }, 1000 * this.BotTimerJoin);
   }
 

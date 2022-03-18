@@ -160,6 +160,7 @@ module.exports = class MatchManager {
         return true;
       });
       if (!isPlayable) {
+        clearTimeout(this.games[roomName].alert);
         delete this.games[roomName];
         this.io.to(roomName).emit("GameDestroied");
       }

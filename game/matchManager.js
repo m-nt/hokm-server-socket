@@ -161,7 +161,7 @@ module.exports = class MatchManager {
           return true;
         }
       });
-      if (!isPlayable) {
+      if (!isPlayable || Object.keys(this.games[roomName].players).length == 0) {
         clearTimeout(this.games[roomName].alert);
         delete this.games[roomName];
         this.io.to(roomName).emit("GameDestroied");
@@ -193,7 +193,7 @@ module.exports = class MatchManager {
             return true;
           }
         });
-        if (!isPlayable) {
+        if (!isPlayable || Object.keys(this.games[roomName].players).length == 0) {
           clearTimeout(this.games[roomName].alert);
           delete this.games[roomName];
         }
@@ -208,7 +208,12 @@ module.exports = class MatchManager {
     let playerbot = new User("player_" + RandomAlphabet(5, true, false, false), MongoObjID());
     playerbot.timeout = 3000;
     playerbot.active = false;
-    let plyr = game.addPlayer(playerbot);
+    let plyr = null;
+    try {
+      plyr = game.addPlayer(playerbot);
+    } catch (error) {
+      console.log(error);
+    }
     if (plyr) {
       this.io.to(game.room).emit("playersjoined", { users: game.playersJson, room: game.room });
       game.alert = setTimeout(() => {

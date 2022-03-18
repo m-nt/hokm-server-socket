@@ -156,17 +156,19 @@ module.exports = class MatchManager {
       }
       let isPlayable = false;
       Object.values(this.games[roomName].players).forEach((player) => {
-        isPlayable = true;
-        return true;
+        if (player.active) {
+          isPlayable = true;
+          return true;
+        }
       });
       if (!isPlayable) {
         clearTimeout(this.games[roomName].alert);
         delete this.games[roomName];
         this.io.to(roomName).emit("GameDestroied");
       }
-      Object.values(this.games).forEach((game) => {
-        //Logger(`game id(${game.room}) with:${game.gameState} status`);
-      });
+      //Object.values(this.games).forEach((game) => {
+      //Logger(`game id(${game.room}) with:${game.gameState} status`);
+      //});
     }
   }
   playerDisconnect(/** @type {Socket} */ socket) {
@@ -198,9 +200,9 @@ module.exports = class MatchManager {
       }
     }
     delete this.players[socket.id];
-    Object.values(this.games).forEach((game) => {
-      //Logger(`game id(${game.room}) with:${game.gameState} status`);
-    });
+    //Object.values(this.games).forEach((game) => {
+    //Logger(`game id(${game.room}) with:${game.gameState} status`);
+    //});
   }
   AddBot(/** @type {Game} */ game) {
     let playerbot = new User("player_" + RandomAlphabet(5, true, false, false), MongoObjID());

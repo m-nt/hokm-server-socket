@@ -10,6 +10,12 @@ module.exports = class User {
     this.active = true;
   }
   get userJson() {
-    return { name: this.name, id: this.id, sockID: this.socket ? this.socket.id : null, number: this.number };
+    return {
+      name: this.name,
+      id: this.id,
+      sockID: this.socket ? this.socket.id : null,
+      number: this.number,
+      active: this.active,
+    };
   }
 };

@@ -1,6 +1,6 @@
 const { Server, Socket } = require("socket.io");
 const User = require("../models/User");
-const Game = require("./game");
+const Game = require("../game/game");
 const MatchManager = require("../game/matchManager");
 
 module.exports = class MonitorGame {

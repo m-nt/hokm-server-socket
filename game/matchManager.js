@@ -13,12 +13,14 @@ module.exports = class MatchManager {
   }
   ReadySignal(/** @type {Socket} */ socket, data) {
     let roomName = this.rooms[socket.id];
-    let readySignal = this.games[roomName].readySignal;
-    //Logger(`ReadySignal: [${readySignal}] by: [${socket.id}] in: [${roomName}]`);
-    if (readySignal == this.games[roomName].readylenght - 1) {
-      this.games[roomName].next(data);
-    } else {
-      this.games[roomName].readySignal++;
+    if (this.games[roomName]) {
+      let readySignal = this.games[roomName].readySignal;
+      //Logger(`ReadySignal: [${readySignal}] by: [${socket.id}] in: [${roomName}]`);
+      if (readySignal == this.games[roomName].readylenght - 1) {
+        this.games[roomName].next(data);
+      } else {
+        this.games[roomName].readySignal++;
+      }
     }
   }
   NextStage(/** @type {Socket} */ socket, data) {

@@ -7,6 +7,8 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const MatchManager = require("./game/matchManager");
 const User = require("./models/User");
+const MonitorGame = require("./tools/MonitorGame");
+
 const io = new Server(server, {
   cors: {
     origin: "*",
@@ -16,13 +18,24 @@ const PORT = process.env.PORT || 3000;
 //MongoDB URL
 const URL = require("./conf.json").MongoURL;
 const Options = require("./conf.json").MongoOpt;
-const { match } = require("assert");
 // //mongose connection
 mongoose
   .connect(URL, Options)
   .then(() => console.log(`mongoose conected to Data Base...`))
   .catch((err) => console.log(err));
 const matchM = new MatchManager(io);
+const Monitor = new MonitorGame(matchM);
+
+try {
+  setInterval(() => {
+    if (Monitor.socket) {
+      Monitor.Update();
+    }
+  }, Math.round(1000 / Monitor.frameRate));
+} catch (error) {
+  console.log(`server got an error: ${error}`);
+}
+
 io.on("connection", (socket) => {
   //console.log("a user connected");
   socket.on("init", (data) => {
@@ -32,6 +45,24 @@ io.on("connection", (socket) => {
     //   console.log(`player[${player.socket.id}] with name:${player.name}`);
     // });
   });
+  try {
+    socket.on("DebugGameInit", (data) => {
+      Monitor.Init(socket, io);
+    });
+    socket.on("DebugGameChangeSetting", (data) => {
+      if (data.room) {
+        Monitor.changeRoom(data.room);
+      }
+      if (data.framerate) {
+        Monitor.changeFrameRate(data.framerate);
+      }
+      if (data.deleteRoom) {
+        Monitor.deleteRoom();
+      }
+    });
+  } catch (error) {
+    console.log(`server got an error: ${error}`);
+  }
   socket.on("ReadyToPlayCustom", (data) => {
     matchM.CustomMatchReady(socket);
   });
@@ -78,7 +109,12 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     delete matchM.players[socket.id];
     matchM.playerDisconnect(socket);
-    //console.log("user disconnected");
+    try {
+      Monitor.disconnect();
+    } catch (error) {
+      console.log(`server got an error: ${error}`);
+    }
+    console.log(`user [${socket.id}] disconnected`);
   });
 });
 io.of("/").adapter.on("create-room", (room) => {

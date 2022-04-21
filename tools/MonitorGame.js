@@ -37,8 +37,13 @@ module.exports = class MonitorGame {
     }
   }
   get getStats() {
-    const _totalPlayers = Object.keys(this.matchManager.players).length;
-    const _totalRooms = Object.keys(this.matchManager.rooms).length;
+    try {
+      const _totalPlayers = Object.keys(this.matchManager.players).length;
+      const _totalRooms = Object.keys(this.matchManager.rooms).length;
+    } catch (error) {
+      const _totalPlayers = 0;
+      const _totalRooms = 0;
+    }
     return {
       totalPlayers: _totalPlayers,
       totalRooms: _totalRooms,

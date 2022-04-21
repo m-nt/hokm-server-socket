@@ -26,15 +26,11 @@ mongoose
 const matchM = new MatchManager(io);
 const Monitor = new MonitorGame(matchM);
 
-try {
-  setInterval(() => {
-    if (Monitor.socket) {
-      Monitor.Update();
-    }
-  }, Math.round(1000 / Monitor.frameRate));
-} catch (error) {
-  console.log(`server got an error: ${error}`);
-}
+setInterval(() => {
+  if (Monitor.socket) {
+    Monitor.Update();
+  }
+}, Math.round(1000 / Monitor.frameRate));
 
 io.on("connection", (socket) => {
   //console.log("a user connected");
@@ -45,24 +41,20 @@ io.on("connection", (socket) => {
     //   console.log(`player[${player.socket.id}] with name:${player.name}`);
     // });
   });
-  try {
-    socket.on("DebugGameInit", (data) => {
-      Monitor.Init(socket, io);
-    });
-    socket.on("DebugGameChangeSetting", (data) => {
-      if (data.room) {
-        Monitor.changeRoom(data.room);
-      }
-      if (data.framerate) {
-        Monitor.changeFrameRate(data.framerate);
-      }
-      if (data.deleteRoom) {
-        Monitor.deleteRoom();
-      }
-    });
-  } catch (error) {
-    console.log(`server got an error: ${error}`);
-  }
+  socket.on("DebugGameInit", (data) => {
+    Monitor.Init(socket, io);
+  });
+  socket.on("DebugGameChangeSetting", (data) => {
+    if (data.room) {
+      Monitor.changeRoom(data.room);
+    }
+    if (data.framerate) {
+      Monitor.changeFrameRate(data.framerate);
+    }
+    if (data.deleteRoom) {
+      Monitor.deleteRoom();
+    }
+  });
   socket.on("ReadyToPlayCustom", (data) => {
     matchM.CustomMatchReady(socket);
   });
@@ -109,11 +101,7 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     delete matchM.players[socket.id];
     matchM.playerDisconnect(socket);
-    try {
-      Monitor.disconnect();
-    } catch (error) {
-      console.log(`server got an error: ${error}`);
-    }
+    Monitor.disconnect();
     console.log(`user [${socket.id}] disconnected`);
   });
 });

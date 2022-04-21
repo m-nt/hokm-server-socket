@@ -33,14 +33,15 @@ module.exports = class MonitorGame {
     if (this.currentRoom) {
       this.io.to(this.socket.id).emit("DebugGameUpdateRoom", this.matchManager.games[this.currentRoom].stage.stageJson);
     } else {
-      const result = this.getStats;
-      this.io.to(this.socket.id).emit("DebugGameUpdateStatus", result);
+      this.io.to(this.socket.id).emit("DebugGameUpdateStatus", this.getStats);
     }
   }
   get getStats() {
+    const _totalPlayers = Object.keys(this.matchManager.players).length;
+    const _totalRooms = Object.keys(this.matchManager.rooms).length;
     return {
-      totalPlayers: Object.keys(this.matchManager.players).length,
-      totalRooms: Object.keys(this.matchManager.rooms).length,
+      totalPlayers: _totalPlayers,
+      totalRooms: _totalRooms,
       players: this.matchManager.players,
       rooms: this.matchManager.rooms,
     };

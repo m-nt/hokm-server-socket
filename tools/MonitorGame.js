@@ -43,8 +43,7 @@ module.exports = class MonitorGame {
       _totalPlayers = Object.keys(this.matchManager.players).length;
       _totalRooms = Object.keys(this.matchManager.rooms).length;
     } catch (error) {
-      _totalPlayers = 0;
-      _totalRooms = 0;
+      console.log(`Error happend: ${error}`);
     }
     return {
       totalPlayers: _totalPlayers,

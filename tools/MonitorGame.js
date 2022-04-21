@@ -31,10 +31,10 @@ module.exports = class MonitorGame {
   }
   Update() {
     if (this.currentRoom) {
-      this.io.to(this.socket).emit("DebugGameUpdateRoom", this.matchManager.games[this.currentRoom].stage.stageJson);
+      this.io.to(this.socket.id).emit("DebugGameUpdateRoom", this.matchManager.games[this.currentRoom].stage.stageJson);
     } else {
       const result = this.getStats;
-      this.io.to(this.socket).emit("DebugGameUpdateStatus", result);
+      this.io.to(this.socket.id).emit("DebugGameUpdateStatus", result);
     }
   }
   get getStats() {

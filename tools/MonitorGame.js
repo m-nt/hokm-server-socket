@@ -31,9 +31,21 @@ module.exports = class MonitorGame {
   }
   Update() {
     if (this.currentRoom) {
-      this.io.to(this.socket.id).emit("DebugGameUpdateRoom", this.matchManager.games[this.currentRoom].stage.stageJson);
+      if (this.matchManager.games[this.currentRoom]) {
+        try {
+          this.io
+            .to(this.socket.id)
+            .emit("DebugGameUpdateRoom", this.matchManager.games[this.currentRoom].stage.stageJson);
+        } catch (error) {
+          console.log(`Error happend: ${error}`);
+        }
+      }
     } else {
-      this.io.to(this.socket.id).emit("DebugGameUpdateStatus", this.getStats);
+      try {
+        this.io.to(this.socket.id).emit("DebugGameUpdateStatus", this.getStats);
+      } catch (error) {
+        console.log(`Error happend: ${error}`);
+      }
     }
   }
   get getStats() {
